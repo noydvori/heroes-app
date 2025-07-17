@@ -1,0 +1,19 @@
+<h1 class="page-title">Welcome to Hero Training Center!</h1>
+<p class="subtitle">Add and train your heroes – up to 5 trainings per day</p>
+
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div class="add-button-container">
+  <button type="button" (click)="showForm = !showForm">+ Add Hero</button>
+</div>
+
+<app-hero-form
+  *ngIf="showForm"
+  (cancel)="showForm = false"
+  (create)="createHero($event)"
+>
+</app-hero-form>
+
+<div *ngFor="let hero of heroes; trackBy: trackById" class="hero-card-wrapper">
+  <app-hero-card [hero]="hero" (train)="trainHero($event)"> </app-hero-card>
+</div>

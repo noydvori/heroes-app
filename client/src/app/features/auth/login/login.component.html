@@ -1,0 +1,37 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="container">
+    <h1>Login</h1>
+    <p>Please login to your trainer account.</p>
+    <hr />
+
+    <label><b>Email</b></label>
+    <input placeholder="Enter Email" formControlName="email" />
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
+      <div *ngIf="email.errors?.['required']">Email is required.</div>
+      <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+    </div>
+
+    <label><b>Password</b></label>
+    <input
+      type="password"
+      placeholder="Enter Password"
+      formControlName="password"
+    />
+    <div
+      *ngIf="password.invalid && (password.dirty || password.touched)"
+      class="error"
+    >
+      <div *ngIf="password.errors?.['required']">Password is required.</div>
+    </div>
+    <hr />
+
+    <button type="submit" class="loginBtn">Login</button>
+    <div *ngIf="serverError" class="error">
+      {{ serverError }}
+    </div>
+  </div>
+
+  <div class="signInHerf">
+    <p>Don’t have an account? <a routerLink="/register">Register here</a>.</p>
+  </div>
+</form>

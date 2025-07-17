@@ -1,0 +1,41 @@
+<div class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Create New Hero</h3>
+    </div>
+    <button class="close-button" (click)="cancel.emit()">×</button>
+
+    <form (ngSubmit)="submit()">
+      <input
+        type="text"
+        placeholder="Name"
+        [(ngModel)]="newHero.name"
+        name="name"
+        required
+      />
+      <select [(ngModel)]="newHero.ability" name="ability" required>
+        <option value="">Select ability</option>
+        <option value="attacker">Attacker</option>
+        <option value="defender">Defender</option>
+      </select>
+      <input
+        type="text"
+        placeholder="Suit Colors"
+        [(ngModel)]="newHero.suitColors"
+        name="suitColors"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Starting Power"
+        [(ngModel)]="newHero.startingPower"
+        name="startingPower"
+        required
+      />
+      <div class="modal-buttons">
+        <button type="submit">Create</button>
+        <button type="button" (click)="resetForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

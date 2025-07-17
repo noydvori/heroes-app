@@ -1,0 +1,61 @@
+.hero-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-card h3 {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.hero-card p {
+  margin: 4px 0;
+}
+
+.hero-card button {
+  background-color: #01cc04;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+}
+
+.hero-card button:hover {
+  background-color: #46ac0b;
+}
+.max-power-warning {
+  color: #e74c3c;
+  font-weight: bold;
+  padding-top: 15px;
+}
+.train-button {
+  background-color: rgb(0, 255, 4);
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.train-button:hover {
+  background-color: #21c300;
+}
+
+.train-button:disabled {
+  background-color: #aaa !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}

@@ -1,0 +1,17 @@
+<div class="hero-card">
+  <h3>{{ hero.name }}</h3>
+  <p>Ability: {{ hero.ability }}</p>
+  <p>Start Date: {{ hero.startTrainingDate | date }}</p>
+  <p>Suit Colors: {{ hero.suitColors }}</p>
+  <p>Power: {{ hero.currentPower | number : "1.0-2" }}</p>
+  <button
+    class="train-button"
+    [disabled]="hero.currentPower >= 100"
+    (click)="onTrainClick()"
+  >
+    Train!
+  </button>
+  <p *ngIf="hero.currentPower >= 100" class="max-power-warning">
+    Hero has reached max power!
+  </p>
+</div>
