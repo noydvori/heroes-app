@@ -1,14 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+namespace HeroesApi.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class HeroController : ControllerBase
+public class HeroesController : ControllerBase
 {
     private readonly IHeroService _heroService;
 
-    public HeroController(IHeroService heroService)
+    public HeroesController(IHeroService heroService)
     {
         _heroService = heroService;
     }

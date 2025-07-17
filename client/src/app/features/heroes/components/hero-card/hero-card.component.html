@@ -6,12 +6,12 @@
   <p>Power: {{ hero.currentPower | number : "1.0-2" }}</p>
   <button
     class="train-button"
-    [disabled]="hero.currentPower >= 100"
+    [disabled]="hero.currentPower >= 1000"
     (click)="onTrainClick()"
   >
     Train!
   </button>
-  <p *ngIf="hero.currentPower >= 100" class="max-power-warning">
+  <p *ngIf="hero.currentPower >= 1000" class="max-power-warning">
     Hero has reached max power!
   </p>
 </div>

@@ -2,6 +2,8 @@ using System.Security.Cryptography;
 using System.Text;
 using HeroesApi.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 public class AuthService : IAuthService
 {

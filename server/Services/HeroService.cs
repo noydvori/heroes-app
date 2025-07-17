@@ -91,7 +91,7 @@ public class HeroService : IHeroService
 
         var percent = Random.Shared.NextDouble() * 0.10;
         var potentialIncrease = hero.CurrentPower * (decimal)percent;
-        var maxAllowedIncrease = 100 - hero.CurrentPower;
+        var maxAllowedIncrease = 1000 - hero.CurrentPower;
 
         var actualIncrease = Math.Min(potentialIncrease, maxAllowedIncrease);
 

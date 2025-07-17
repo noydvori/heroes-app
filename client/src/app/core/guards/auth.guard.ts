@@ -8,9 +8,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   if (!token || !isTokenValid(token)) {
     localStorage.removeItem('token');
-    router.navigate(['/login'], {
-      queryParams: { returnUrl: state.url },
-    });
+    router.navigate(['/login']);
     return false;
   }
 

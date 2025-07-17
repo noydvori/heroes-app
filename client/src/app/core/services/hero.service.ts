@@ -6,7 +6,7 @@ import { API_BASE_URL } from '../../app.config';
 
 @Injectable({ providedIn: 'root' })
 export class HeroService {
-  private readonly apiUrl = `${API_BASE_URL}/auth`;
+  private readonly apiUrl = `${API_BASE_URL}/heroes`;
 
   constructor(private http: HttpClient) {}
 

@@ -94,7 +94,7 @@ export class RegistrationComponent {
         this.successMessage = res.message ?? 'Registration successful!';
         this.registerForm.reset();
         this.isSubmitted = false;
-        setTimeout(() => this.router.navigate(['/auth/login']), 2000);
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (err: any) => this.handleError(err),
     });

@@ -14,7 +14,7 @@ export class HeroCardComponent {
   @Output() train = new EventEmitter<Hero>();
 
   onTrainClick(): void {
-    if (this.hero.currentPower < 100) {
+    if (this.hero.currentPower < 1000) {
       this.train.emit(this.hero);
     }
   }

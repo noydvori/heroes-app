@@ -15,7 +15,7 @@ import { Hero, HeroCreateRequest } from '../../../../core/models/hero.model';
 export class HeroListComponent implements OnInit {
   heroes: Hero[] = [];
   error: string | null = null;
-  isLoading = false;
+  loaded = false;
   showForm = false;
 
   constructor(private heroService: HeroService) {}
@@ -25,15 +25,13 @@ export class HeroListComponent implements OnInit {
   }
 
   loadHeroes(): void {
-    this.isLoading = true;
     this.heroService.getMyHeroes().subscribe({
       next: (data) => {
         this.heroes = data;
-        this.isLoading = false;
+        this.loaded = true;
       },
       error: () => {
         this.error = 'Failed to load heroes.';
-        this.isLoading = false;
       },
     });
   }

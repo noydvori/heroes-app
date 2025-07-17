@@ -1,11 +1,11 @@
 <h1 class="page-title">Welcome to Hero Training Center!</h1>
 <p class="subtitle">Add and train your heroes – up to 5 trainings per day</p>
 
-<div *ngIf="error" class="error">{{ error }}</div>
-
 <div class="add-button-container">
   <button type="button" (click)="showForm = !showForm">+ Add Hero</button>
 </div>
+
+<div *ngIf="error" class="error">{{ error }}</div>
 
 <app-hero-form
   *ngIf="showForm"
@@ -14,6 +14,17 @@
 >
 </app-hero-form>
 
-<div *ngFor="let hero of heroes; trackBy: trackById" class="hero-card-wrapper">
-  <app-hero-card [hero]="hero" (train)="trainHero($event)"> </app-hero-card>
-</div>
+<ng-container *ngIf="loaded">
+  <div *ngIf="heroes.length > 0; else noHeroes">
+    <div
+      *ngFor="let hero of heroes; trackBy: trackById"
+      class="hero-card-wrapper"
+    >
+      <app-hero-card [hero]="hero" (train)="trainHero($event)"></app-hero-card>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #noHeroes>
+  <p class="empty-arr" *ngIf="!error">No heroes found.</p>
+</ng-template>
