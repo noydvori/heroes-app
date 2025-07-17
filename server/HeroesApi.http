@@ -1,0 +1,43 @@
+### 
+POST http://localhost:5026/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "trainer1@example.com",
+  "password": "StrongP@ss1"
+}
+
+### 
+POST http://localhost:5026/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "trainer1@example.com",
+  "password": "StrongP@ss1"
+}
+
+###
+@token=eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjNiN2YwOTJjLTkwODAtNGExYS05NDE1LWYyMWRkZTUxMjkwYyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ0cmFpbmVyMUBleGFtcGxlLmNvbSIsImV4cCI6MTc1MjU3ODQ1OX0.JDQtr_BnLuLvSLR8LGbxzTnywh4wNckkYw2jAnk4G-A-FaulKcanlGtpSEsqzYyZYbnMggnc_oLIySFgJvzPKQ
+
+POST http://localhost:5026/api/hero
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Thunder Girl",
+  "ability": "attacker",
+  "suitColors": "blue,yellow",
+  "startingPower": 120
+}
+
+###
+
+GET http://localhost:5026/api/hero
+Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:5026/api/hero/train/9d8deda2-0909-47e7-83d6-f2b10ed9242f
+Authorization: Bearer {{token}}
+
+
