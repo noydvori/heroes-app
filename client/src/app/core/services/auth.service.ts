@@ -6,10 +6,11 @@ import {
   AuthResponse,
   RegisterRequest,
 } from '../models/auth.model';
+import { API_BASE_URL } from '../../app.config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:5026/api/auth';
+  private readonly apiUrl = `${API_BASE_URL}/auth`;
 
   constructor(private http: HttpClient) {}
 

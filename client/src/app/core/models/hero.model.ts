@@ -6,8 +6,6 @@ export interface Hero {
   suitColors: string;
   startingPower: number;
   currentPower: number;
-  trainingsToday: number;
-  lastTrainingDate?: Date;
 }
 
 export interface HeroCreateRequest {
