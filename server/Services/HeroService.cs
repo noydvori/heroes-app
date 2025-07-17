@@ -47,9 +47,9 @@ public class HeroService : IHeroService
 
         var hero = new Hero
         {
-            Name = dto.Name,
-            Ability = dto.Ability,
-            SuitColors = dto.SuitColors,
+            Name = dto.Name.Trim(),
+            Ability = dto.Ability.Trim().ToLower(),
+            SuitColors = dto.SuitColors.Trim(),
             StartingPower = dto.StartingPower,
             CurrentPower = dto.StartingPower,
             StartTrainingDate = DateTime.UtcNow,
@@ -100,7 +100,9 @@ public class HeroService : IHeroService
 
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Hero {HeroId} trained by trainer {TrainerId}, gained {Power:F2}", hero.Id, trainerId, actualIncrease);
+        _logger.LogInformation("Hero training completed. HeroId: {HeroId}, TrainerId: {TrainerId}, PowerGain: {PowerGain}", 
+    hero.Id, trainerId, actualIncrease);
+
 
         return new HeroTrainingResultDto
 {

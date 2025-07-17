@@ -22,6 +22,9 @@ public class HeroController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<HeroResponseDto>> CreateHero(CreateHeroRequestDto dto)
     {
+        if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
         var created = await _heroService.CreateHeroAsync(dto);
         if (created == null)
             return BadRequest(new { message = "Failed to create hero" });

@@ -15,10 +15,10 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Hero>()
             .Property(h => h.StartingPower)
-            .HasPrecision(18, 4); 
+            .HasPrecision(18, 2); 
 
         modelBuilder.Entity<Hero>()
             .Property(h => h.CurrentPower)
-            .HasPrecision(18, 4); 
+            .HasPrecision(18, 2); 
     }
 }
