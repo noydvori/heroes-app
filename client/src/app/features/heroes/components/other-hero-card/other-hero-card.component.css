@@ -1,0 +1,22 @@
+.hero-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-card h3 {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.hero-card p {
+  margin: 4px 0;
+}
+
+.private-note {
+  font-weight: bold;
+}

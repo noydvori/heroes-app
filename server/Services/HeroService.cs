@@ -1,19 +1,28 @@
 using HeroesApi.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.SignalR;
+
 
 public class HeroService : IHeroService
 {
     private readonly AppDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<HeroService> _logger;
+    private readonly IHubContext<HeroHub> _hubContext;
 
-    public HeroService(AppDbContext context, IHttpContextAccessor httpContextAccessor, ILogger<HeroService> logger)
-    {
-        _context = context;
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-    }
+
+    public HeroService(
+    AppDbContext context,
+    IHttpContextAccessor httpContextAccessor,
+    ILogger<HeroService> logger,
+    IHubContext<HeroHub> hubContext)
+{
+    _context = context;
+    _httpContextAccessor = httpContextAccessor;
+    _logger = logger;
+    _hubContext = hubContext;
+}
 
     private Guid GetTrainerId()
     {
@@ -25,6 +34,16 @@ public class HeroService : IHeroService
         }
 
         return Guid.Parse(userId);
+    }
+    public async Task<List<HeroResponseDto>> GetAllHeroesAsync()
+    {
+        var heroes = await _context.Heroes
+            .OrderByDescending(h => h.CurrentPower)
+            .ToListAsync();
+
+        _logger.LogInformation("Retrieved {Count} heroes", heroes.Count);
+
+        return heroes.Select(MapToDto).ToList();
     }
 
     public async Task<List<HeroResponseDto>> GetMyHeroesAsync()
@@ -57,8 +76,9 @@ public class HeroService : IHeroService
         };
 
         _context.Heroes.Add(hero);
+        
         await _context.SaveChangesAsync();
-
+        await _hubContext.Clients.All.SendAsync("HeroListUpdated");
         _logger.LogInformation("Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
 
         return MapToDto(hero);
@@ -99,6 +119,7 @@ public class HeroService : IHeroService
         hero.TrainingsToday++;
 
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("HeroListUpdated");
 
         _logger.LogInformation("Hero training completed. HeroId: {HeroId}, TrainerId: {TrainerId}, PowerGain: {PowerGain}", 
     hero.Id, trainerId, actualIncrease);
@@ -120,6 +141,7 @@ public class HeroService : IHeroService
         SuitColors = h.SuitColors,
         StartTrainingDate = h.StartTrainingDate,
         StartingPower = h.StartingPower,
-        CurrentPower = h.CurrentPower
+        CurrentPower = h.CurrentPower,
+        TrainerId = h.TrainerId
     };
 }

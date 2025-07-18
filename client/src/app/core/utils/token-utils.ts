@@ -7,3 +7,12 @@ export function isTokenValid(token: string): boolean {
     return false;
   }
 }
+export function getCurrentUserIdFromToken(): string {
+  const token = localStorage.getItem('token');
+  if (!token) return '';
+
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  return payload[
+    'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+  ];
+}

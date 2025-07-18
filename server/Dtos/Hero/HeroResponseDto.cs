@@ -7,4 +7,5 @@ public class HeroResponseDto
     public string SuitColors { get; set; } = null!;
     public decimal StartingPower { get; set; }
     public decimal CurrentPower { get; set; }
+    public Guid TrainerId { get; set; }
 }

@@ -20,7 +20,17 @@
       *ngFor="let hero of heroes; trackBy: trackById"
       class="hero-card-wrapper"
     >
-      <app-hero-card [hero]="hero" (train)="trainHero($event)"></app-hero-card>
+      <app-hero-card
+        *ngIf="hero.trainerId === currentUserId"
+        [hero]="hero"
+        (train)="trainHero($event)"
+        [currentUserId]="currentUserId"
+      ></app-hero-card>
+
+      <app-other-hero-card
+        *ngIf="hero.trainerId !== currentUserId"
+        [hero]="hero"
+      ></app-other-hero-card>
     </div>
   </div>
 </ng-container>

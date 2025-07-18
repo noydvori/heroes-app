@@ -6,6 +6,7 @@ export interface Hero {
   suitColors: string;
   startingPower: number;
   currentPower: number;
+  trainerId: string;
 }
 
 export interface HeroCreateRequest {

@@ -49,6 +49,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
@@ -67,12 +68,18 @@ app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAngular");
+
+app.UseRouting(); 
+
 app.UseMiddleware<ExceptionMiddleware>();
-
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<HeroHub>("/heroHub"); 
+});
+
 
 app.Run();

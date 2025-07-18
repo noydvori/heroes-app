@@ -4,11 +4,19 @@ import { HeroCardComponent } from '../hero-card/hero-card.component';
 import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { HeroService } from '../../../../core/services/hero.service';
 import { Hero, HeroCreateRequest } from '../../../../core/models/hero.model';
+import { OtherHeroCardComponent } from '../other-hero-card/other-hero-card-component';
+import { getCurrentUserIdFromToken } from '../../../../core/utils/token-utils';
+import { HeroHubService } from '../../../../core/services/hero-hub.service';
 
 @Component({
   selector: 'app-hero-list',
   standalone: true,
-  imports: [CommonModule, HeroCardComponent, HeroFormComponent],
+  imports: [
+    CommonModule,
+    HeroCardComponent,
+    HeroFormComponent,
+    OtherHeroCardComponent,
+  ],
   templateUrl: './heroes-list.component.html',
   styleUrls: ['./heroes-list.component.css'],
 })
@@ -17,15 +25,26 @@ export class HeroListComponent implements OnInit {
   error: string | null = null;
   loaded = false;
   showForm = false;
+  currentUserId: string = '';
 
-  constructor(private heroService: HeroService) {}
+  constructor(
+    private heroService: HeroService,
+    private heroHubService: HeroHubService
+  ) {}
 
   ngOnInit(): void {
+    this.currentUserId = getCurrentUserIdFromToken();
     this.loadHeroes();
+
+    this.heroHubService.startConnection();
+
+    this.heroHubService.heroChanged$.subscribe(() => {
+      this.loadHeroes();
+    });
   }
 
   loadHeroes(): void {
-    this.heroService.getMyHeroes().subscribe({
+    this.heroService.getAllHeroes().subscribe({
       next: (data) => {
         this.heroes = data;
         this.loaded = true;

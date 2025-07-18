@@ -15,6 +15,11 @@ export class HeroService {
       .get<Hero[]>(this.apiUrl)
       .pipe(catchError((err) => throwError(() => this.getErrorMessage(err))));
   }
+  getAllHeroes(): Observable<Hero[]> {
+    return this.http
+      .get<Hero[]>(`${this.apiUrl}/all`)
+      .pipe(catchError((err) => throwError(() => this.getErrorMessage(err))));
+  }
 
   createHero(heroData: HeroCreateRequest): Observable<Hero> {
     return this.http

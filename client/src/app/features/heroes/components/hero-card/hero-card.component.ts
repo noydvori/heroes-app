@@ -11,6 +11,8 @@ import { Hero } from '../../../../core/models/hero.model';
 })
 export class HeroCardComponent {
   @Input() hero!: Hero;
+  @Input() currentUserId!: string;
+
   @Output() train = new EventEmitter<Hero>();
 
   onTrainClick(): void {

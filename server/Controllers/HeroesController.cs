@@ -20,6 +20,12 @@ public class HeroesController : ControllerBase
     {
         return Ok(await _heroService.GetMyHeroesAsync());
     }
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll()
+    {
+        var heroes = await _heroService.GetAllHeroesAsync();
+        return Ok(heroes);
+    }
 
     [HttpPost]
     public async Task<ActionResult<HeroResponseDto>> CreateHero(CreateHeroRequestDto dto)
