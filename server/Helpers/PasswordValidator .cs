@@ -1,5 +1,7 @@
 using System.Text.RegularExpressions;
 
+namespace HeroesApi.Helpers;
+
 public static class PasswordValidator
 {
     public static bool IsValid(string password)

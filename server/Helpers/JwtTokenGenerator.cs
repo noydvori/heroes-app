@@ -1,7 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using HeroesApi.Models;
 using Microsoft.IdentityModel.Tokens;
+
+namespace HeroesApi.Helpers;
 
 public static class JwtTokenGenerator
 {
@@ -9,8 +12,8 @@ public static class JwtTokenGenerator
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, trainer.Id.ToString()),
-            new Claim(ClaimTypes.Name, trainer.Email)
+            new Claim("id", trainer.Id.ToString()),
+            new Claim("email", trainer.Email)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtConfig:Key"]!));

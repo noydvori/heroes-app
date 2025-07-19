@@ -1,4 +1,8 @@
 using HeroesApi.Data;
+using HeroesApi.Hubs;
+using HeroesApi.Middleware;
+using HeroesApi.Services;
+using HeroesApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

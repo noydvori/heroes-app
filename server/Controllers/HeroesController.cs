@@ -1,3 +1,5 @@
+using HeroesApi.Dtos.Hero;
+using HeroesApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

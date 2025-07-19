@@ -56,6 +56,7 @@ export class LoginComponent {
         }
 
         this.successMessage = res.message ?? 'Login successful!';
+        this.serverError = '';
         localStorage.setItem('token', res.token);
         setTimeout(() => this.router.navigate(['/heroes']), 2000);
       },

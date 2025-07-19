@@ -1,3 +1,4 @@
+using HeroesApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HeroesApi.Data;

@@ -12,7 +12,5 @@ export function getCurrentUserIdFromToken(): string {
   if (!token) return '';
 
   const payload = JSON.parse(atob(token.split('.')[1]));
-  return payload[
-    'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-  ];
+  return payload['id'];
 }

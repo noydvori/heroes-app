@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace HeroesApi.Models;
+
 public class Hero
 {
     public Guid Id { get; set; } = Guid.NewGuid();

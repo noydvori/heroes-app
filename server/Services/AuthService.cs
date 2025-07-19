@@ -1,9 +1,15 @@
 using System.Security.Cryptography;
 using System.Text;
 using HeroesApi.Data;
+using HeroesApi.Dtos.Auth;
+using HeroesApi.Helpers;
+using HeroesApi.Models;
+using HeroesApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
+namespace HeroesApi.Services;
 
 public class AuthService : IAuthService
 {

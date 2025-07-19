@@ -1,3 +1,5 @@
+namespace HeroesApi.Dtos.Hero;
+
 public class HeroTrainingResultDto
 {
     public bool Success { get; set; }

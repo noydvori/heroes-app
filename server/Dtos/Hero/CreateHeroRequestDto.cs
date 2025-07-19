@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace HeroesApi.Dtos.Hero;
+
 public class CreateHeroRequestDto
 {
     [Required, MaxLength(50)]

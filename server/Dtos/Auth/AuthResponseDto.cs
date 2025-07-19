@@ -1,3 +1,5 @@
+namespace HeroesApi.Dtos.Auth;
+
 public class AuthResponseDto
 {
     public bool Success { get; set; }

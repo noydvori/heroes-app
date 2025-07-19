@@ -1,5 +1,7 @@
 using System.Net;
 
+namespace HeroesApi.Middleware;
+
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;

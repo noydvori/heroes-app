@@ -1,8 +1,13 @@
-using HeroesApi.Data;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using HeroesApi.Data;
+using HeroesApi.Dtos.Hero;
+using HeroesApi.Hubs;
+using HeroesApi.Models;
+using HeroesApi.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
+namespace HeroesApi.Services;
 
 public class HeroService : IHeroService
 {
@@ -26,7 +31,7 @@ public class HeroService : IHeroService
 
     private Guid GetTrainerId()
     {
-        var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue("id");
         if (string.IsNullOrEmpty(userId))
         {
             _logger.LogWarning("TRAINER_AUTH_FAILED: Trainer ID not found in token");

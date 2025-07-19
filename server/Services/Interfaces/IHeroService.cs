@@ -1,3 +1,7 @@
+using HeroesApi.Dtos.Hero;
+
+namespace HeroesApi.Services.Interfaces;
+
 public interface IHeroService
 {
     Task<List<HeroResponseDto>> GetMyHeroesAsync();

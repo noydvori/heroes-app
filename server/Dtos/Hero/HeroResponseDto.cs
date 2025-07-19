@@ -1,3 +1,5 @@
+namespace HeroesApi.Dtos.Hero;
+
 public class HeroResponseDto
 {
     public Guid Id { get; set; }
