@@ -59,11 +59,13 @@ export class HeroListComponent implements OnInit {
     this.heroService.createHero(hero).subscribe({
       next: (newHero: Hero) => {
         this.showForm = false;
-
         this.heroes.push(newHero);
         this.heroes.sort((a, b) => b.currentPower - a.currentPower);
+        alert(`Hero ${newHero.name} created seccessfully`);
       },
-      error: () => alert('Failed to create hero.'),
+      error: () => {
+        alert('Failed to create hero.');
+      },
     });
   }
 

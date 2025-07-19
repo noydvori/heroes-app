@@ -90,24 +90,15 @@ export class RegistrationComponent {
     const formValue = this.registerForm.value as RegisterRequest;
 
     this.authService.register(formValue).subscribe({
-      next: (res: AuthResponse) => {
+      next: (res) => {
         this.successMessage = res.message ?? 'Registration successful!';
         this.registerForm.reset();
         this.isSubmitted = false;
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
-      error: (err: any) => this.handleError(err),
+      error: (err) => {
+        this.serverError = err ?? 'Something went wrong. Please try again.';
+      },
     });
-  }
-
-  private handleError(err: any): void {
-    console.error('[Registration Error]', err);
-    if (err.status === 409) {
-      this.serverError = err.error?.message ?? 'Email already exists.';
-    } else if (err.status === 400) {
-      this.serverError = err.error?.message ?? 'Invalid registration data.';
-    } else {
-      this.serverError = 'An unexpected error occurred. Please try again.';
-    }
   }
 }

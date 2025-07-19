@@ -12,12 +12,9 @@ import { Hero } from '../../../../core/models/hero.model';
 export class HeroCardComponent {
   @Input() hero!: Hero;
   @Input() currentUserId!: string;
-
-  @Output() train = new EventEmitter<Hero>();
+  @Output() onTrain = new EventEmitter<Hero>();
 
   onTrainClick(): void {
-    if (this.hero.currentPower < 1000) {
-      this.train.emit(this.hero);
-    }
+    this.onTrain.emit(this.hero);
   }
 }

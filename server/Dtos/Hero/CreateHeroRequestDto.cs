@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 public class CreateHeroRequestDto
 {
-    [Required, StringLength(50)]
+    [Required, MaxLength(50)]
     public string Name { get; set; } = null!;
     
     [Required, RegularExpression("^(attacker|defender)$")]
@@ -10,7 +10,6 @@ public class CreateHeroRequestDto
 
     public string SuitColors { get; set; } = null!;
 
-    
-    [Required, Range(1, 1000)]
+    [Required]
     public decimal StartingPower { get; set; }
 }

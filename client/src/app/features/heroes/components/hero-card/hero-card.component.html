@@ -4,14 +4,5 @@
   <p>Start Date: {{ hero.startTrainingDate | date }}</p>
   <p>Suit Colors: {{ hero.suitColors }}</p>
   <p>Power: {{ hero.currentPower | number : "1.0-2" }}</p>
-  <button
-    class="train-button"
-    [disabled]="hero.currentPower >= 1000"
-    (click)="onTrainClick()"
-  >
-    Train!
-  </button>
-  <p *ngIf="hero.currentPower >= 1000" class="max-power-warning">
-    Hero has reached max power!
-  </p>
+  <button class="train-button" (click)="onTrainClick()">Train!</button>
 </div>

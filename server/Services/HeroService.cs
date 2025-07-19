@@ -29,7 +29,7 @@ public class HeroService : IHeroService
         var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
         {
-            _logger.LogWarning("Trainer ID not found in token.");
+            _logger.LogWarning("TRAINER_AUTH_FAILED: Trainer ID not found in token");
             throw new UnauthorizedAccessException("Trainer ID not found in token.");
         }
 
@@ -41,7 +41,7 @@ public class HeroService : IHeroService
             .OrderByDescending(h => h.CurrentPower)
             .ToListAsync();
 
-        _logger.LogInformation("Retrieved {Count} heroes", heroes.Count);
+        _logger.LogInformation("HEROES_GET_ALL_SUCCESS: Retrieved {Count} heroes", heroes.Count);
 
         return heroes.Select(MapToDto).ToList();
     }
@@ -55,7 +55,7 @@ public class HeroService : IHeroService
             .OrderByDescending(h => h.CurrentPower)
             .ToListAsync();
 
-        _logger.LogInformation("Retrieved {Count} heroes for trainer {TrainerId}", heroes.Count, trainerId);
+        _logger.LogInformation("HEROES_GET_MINE_SUCCESS: Retrieved {Count} heroes for trainer {TrainerId}", heroes.Count, trainerId);
 
         return heroes.Select(MapToDto).ToList();
     }
@@ -79,7 +79,7 @@ public class HeroService : IHeroService
         
         await _context.SaveChangesAsync();
         await _hubContext.Clients.All.SendAsync("HeroListUpdated");
-        _logger.LogInformation("Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
+        _logger.LogInformation("HERO_CREATE_SUCCESS: Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
 
         return MapToDto(hero);
     }
@@ -93,7 +93,7 @@ public class HeroService : IHeroService
 
         if (hero == null)
         {
-            _logger.LogWarning("Trainer {TrainerId} attempted to train nonexistent hero {HeroId}", trainerId, heroId);
+            _logger.LogWarning("HERO_TRAIN_FAILED: Hero not found - TrainerId: {TrainerId}, HeroId: {HeroId}", trainerId, heroId);
             return new HeroTrainingResultDto { Success = false, Message = "Hero not found" };
         }
 
@@ -105,30 +105,27 @@ public class HeroService : IHeroService
 
         if (hero.TrainingsToday >= 5)
         {
-            _logger.LogInformation("Hero {HeroId} already trained 5 times today", heroId);
+            _logger.LogInformation("HERO_TRAIN_LIMIT: Daily limit reached - HeroId: {HeroId}", heroId);
             return new HeroTrainingResultDto { Success = false, Message = "Hero has already trained 5 times today" };
         }
 
         var percent = Random.Shared.NextDouble() * 0.10;
-        var potentialIncrease = hero.CurrentPower * (decimal)percent;
-        var maxAllowedIncrease = 1000 - hero.CurrentPower;
+        var increase = hero.CurrentPower * (decimal)percent;
 
-        var actualIncrease = Math.Min(potentialIncrease, maxAllowedIncrease);
-
-        hero.CurrentPower += actualIncrease;
+        hero.CurrentPower += increase;
         hero.TrainingsToday++;
 
         await _context.SaveChangesAsync();
         await _hubContext.Clients.All.SendAsync("HeroListUpdated");
 
-        _logger.LogInformation("Hero training completed. HeroId: {HeroId}, TrainerId: {TrainerId}, PowerGain: {PowerGain}", 
-    hero.Id, trainerId, actualIncrease);
+        _logger.LogInformation("HERO_TRAIN_SUCCESS: Training completed - HeroId: {HeroId}, TrainerId: {TrainerId}, PowerGain: {PowerGain:F2}", 
+    hero.Id, trainerId, increase);
 
 
         return new HeroTrainingResultDto
 {
     Success = true,
-    Message = $"Hero trained and gained {actualIncrease:F2} power",
+    Message = $"Hero trained and gained {increase:F2} power",
     UpdatedHero = MapToDto(hero)
 };
     }

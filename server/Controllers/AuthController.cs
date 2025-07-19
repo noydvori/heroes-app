@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 namespace HeroesApi.Controllers;
+using Microsoft.AspNetCore.Authorization;
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -13,34 +15,24 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
     {
         var result = await _authService.RegisterAsync(dto.Email, dto.Password);
-
         if (!result.Success)
-            return BadRequest(new { message = result.Message });
+            return BadRequest(result);
 
-        return Ok(new AuthResponseDto
-        {
-            Success = true,
-            Message = result.Message
-        });
+        return Ok(result);
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
     {
         var result = await _authService.LoginAsync(dto.Email, dto.Password);
-
         if (!result.Success)
-            return Unauthorized(new { message = result.Message });
+            return Ok(result);
 
-        return Ok(new AuthResponseDto
-        {
-            Success = true,
-            Message = result.Message,
-            Token = result.Token
-        });
+        return Ok(result);
     }
 }
-

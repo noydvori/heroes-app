@@ -22,13 +22,19 @@ input {
   background: #f1f1f1;
   border-radius: 5px;
 }
-
 .error {
   color: red;
   font-size: 0.9rem;
-  margin-top: -5px;
-  margin-bottom: 10px;
-  text-align: left;
+  margin: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+.success {
+  color: #04aa6d;
+  font-size: 0.9rem;
+  margin: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 .registerBtn {
   background-color: #04aa6d;

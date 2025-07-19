@@ -16,13 +16,13 @@ import { HeroCreateRequest } from '../../../../core/models/hero.model';
   styleUrls: ['./hero-form.component.css'],
 })
 export class HeroFormComponent {
-  @Output() create = new EventEmitter<HeroCreateRequest>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() onCreate = new EventEmitter<HeroCreateRequest>();
+  @Output() onCancel = new EventEmitter<void>();
 
-  form: FormGroup;
+  addHeroForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
+    this.addHeroForm = this.fb.group({
       name: ['', Validators.required],
       ability: ['', Validators.required],
       suitColors: ['', Validators.required],
@@ -30,18 +30,26 @@ export class HeroFormComponent {
     });
   }
 
-  submit(): void {
-    if (this.form.valid) {
-      this.create.emit(this.form.value);
+  onSubmit(): void {
+    if (this.addHeroForm.valid) {
+      this.onCreate.emit(this.addHeroForm.value);
     }
   }
 
   resetForm(): void {
-    this.form.reset();
-    this.cancel.emit();
+    this.addHeroForm.reset();
+    this.onCancel.emit();
   }
-  isInvalid(field: string): boolean {
-    const control = this.form.get(field);
-    return !!control && control.invalid && (control.dirty || control.touched);
+  get name() {
+    return this.addHeroForm.controls['name'];
+  }
+  get ability() {
+    return this.addHeroForm.controls['ability'];
+  }
+  get suitColors() {
+    return this.addHeroForm.controls['suitColors'];
+  }
+  get startingPower() {
+    return this.addHeroForm.controls['startingPower'];
   }
 }

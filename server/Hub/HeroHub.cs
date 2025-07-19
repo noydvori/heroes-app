@@ -1,6 +1,3 @@
 using Microsoft.AspNetCore.SignalR;
 
-public class HeroHub : Hub
-{
-    
-}
+public class HeroHub : Hub{}

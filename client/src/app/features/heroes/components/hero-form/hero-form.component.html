@@ -3,18 +3,25 @@
     <div class="modal-header">
       <h3>Create New Hero</h3>
     </div>
-    <button class="close-button" (click)="cancel.emit()">×</button>
+    <button class="close-button" (click)="onCancel.emit()">×</button>
 
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="addHeroForm" (ngSubmit)="onSubmit()">
       <input type="text" placeholder="Name" formControlName="name" required />
-      <div *ngIf="isInvalid('name')" class="error">Name is required.</div>
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error">
+        Name is required.
+      </div>
 
       <select formControlName="ability" required>
         <option value="">Select ability</option>
         <option value="attacker">Attacker</option>
         <option value="defender">Defender</option>
       </select>
-      <div *ngIf="isInvalid('ability')" class="error">Ability is required.</div>
+      <div
+        *ngIf="ability.invalid && (ability.dirty || ability.touched)"
+        class="error"
+      >
+        Ability is required.
+      </div>
 
       <input
         type="text"
@@ -22,7 +29,10 @@
         formControlName="suitColors"
         required
       />
-      <div *ngIf="isInvalid('suitColors')" class="error">
+      <div
+        *ngIf="suitColors.invalid && (suitColors.dirty || suitColors.touched)"
+        class="error"
+      >
         Suit colors are required.
       </div>
 
@@ -32,8 +42,19 @@
         formControlName="startingPower"
         required
       />
+      <div
+        *ngIf="
+          startingPower.invalid &&
+          (startingPower.dirty || startingPower.touched)
+        "
+        class="error"
+      >
+        Starting Power is required.
+      </div>
       <div class="modal-buttons">
-        <button type="submit" [disabled]="form.invalid">Create</button>
+        <button class="submit" type="submit" [disabled]="addHeroForm.invalid">
+          Create
+        </button>
         <button type="button" (click)="resetForm()">Cancel</button>
       </div>
     </form>

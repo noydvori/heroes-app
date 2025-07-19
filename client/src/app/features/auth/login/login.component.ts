@@ -50,21 +50,21 @@ export class LoginComponent {
 
     this.authService.login(formValue).subscribe({
       next: (res) => {
+        if (!res.success) {
+          this.serverError = res.message || 'Login failed.';
+          return;
+        }
+
         this.successMessage = res.message ?? 'Login successful!';
-        this.router.navigate(['/heroes']);
+        localStorage.setItem('token', res.token);
+        setTimeout(() => this.router.navigate(['/heroes']), 2000);
       },
-      error: (err) => this.handleError(err),
+      error: (err) => {
+        this.serverError = 'Server error. Please try again.';
+      },
     });
   }
 
-  private handleError(err: any): void {
-    console.error('[Login Error]', err);
-
-    this.serverError =
-      err?.status === 400 && err.error?.message
-        ? err.error.message
-        : 'Wrong username or password.';
-  }
   get email() {
     return this.loginForm.controls.email;
   }

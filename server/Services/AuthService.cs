@@ -22,13 +22,13 @@ public class AuthService : IAuthService
     {
         if (await _context.Trainers.AnyAsync(t => t.Email == email))
         {
-            _logger.LogWarning("Registration attempt failed: Email {Email} already exists", email);
+            _logger.LogWarning("TRAINER_REGISTER_FAILED: Email already exists - {Email}", email);
             return new AuthResponseDto { Success = false, Message = "Email already exists" };
         }
 
         if (!PasswordValidator.IsValid(password))
         {
-            _logger.LogWarning("Registration attempt failed: Weak password provided for {Email}", email);
+            _logger.LogWarning("TRAINER_REGISTER_FAILED: Weak password - {Email}", email);
             return new AuthResponseDto
             {
                 Success = false,
@@ -47,7 +47,7 @@ public class AuthService : IAuthService
         _context.Trainers.Add(trainer);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("New trainer registered successfully with email: {Email}", email);
+        _logger.LogInformation("TRAINER_REGISTER_SUCCESS: New trainer registered - {Email}", email);
 
         return new AuthResponseDto
         {
@@ -61,21 +61,21 @@ public class AuthService : IAuthService
         var trainer = await _context.Trainers.FirstOrDefaultAsync(t => t.Email == email);
         if (trainer == null)
         {
-            _logger.LogWarning("Login attempt failed: Trainer not found with email {Email}", email);
-            return new AuthResponseDto { Success = false, Message = "Trainer not found" };
+            _logger.LogWarning("TRAINER_LOGIN_FAILED: Trainer not found - {Email}", email);
+            return new AuthResponseDto { Success = false, Message = "Wrong cradentials" };
         }
 
         using var hmac = new HMACSHA512(trainer.PasswordSalt);
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         if (!computedHash.SequenceEqual(trainer.PasswordHash))
         {
-            _logger.LogWarning("Login attempt failed: Invalid password for email {Email}", email);
-            return new AuthResponseDto { Success = false, Message = "Invalid password" };
+            _logger.LogWarning("TRAINER_LOGIN_FAILED: Invalid password - {Email}", email);
+            return new AuthResponseDto { Success = false, Message = "Wrong cradentials" };
         }
 
         var token = JwtTokenGenerator.CreateToken(trainer, _config);
 
-        _logger.LogInformation("Trainer {Email} logged in successfully", email);
+        _logger.LogInformation("TRAINER_LOGIN_SUCCESS: Trainer logged in - {Email}", email);
 
         return new AuthResponseDto
         {

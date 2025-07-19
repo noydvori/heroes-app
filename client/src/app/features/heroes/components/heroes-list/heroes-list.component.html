@@ -9,8 +9,8 @@
 
 <app-hero-form
   *ngIf="showForm"
-  (cancel)="showForm = false"
-  (create)="createHero($event)"
+  (onCancel)="showForm = false"
+  (onCreate)="createHero($event)"
 >
 </app-hero-form>
 
@@ -23,8 +23,7 @@
       <app-hero-card
         *ngIf="hero.trainerId === currentUserId"
         [hero]="hero"
-        (train)="trainHero($event)"
-        [currentUserId]="currentUserId"
+        (onTrain)="trainHero($event)"
       ></app-hero-card>
 
       <app-other-hero-card

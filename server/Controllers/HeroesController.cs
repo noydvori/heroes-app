@@ -18,26 +18,26 @@ public class HeroesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<HeroResponseDto>>> GetMyHeroes()
     {
-        return Ok(await _heroService.GetMyHeroesAsync());
+        return await _heroService.GetMyHeroesAsync();
     }
+
     [HttpGet("all")]
-    public async Task<IActionResult> GetAll()
+    public async Task<ActionResult<List<HeroResponseDto>>> GetAll()
     {
-        var heroes = await _heroService.GetAllHeroesAsync();
-        return Ok(heroes);
+        return await _heroService.GetAllHeroesAsync();
     }
 
     [HttpPost]
-    public async Task<ActionResult<HeroResponseDto>> CreateHero(CreateHeroRequestDto dto)
+    public async Task<IActionResult> CreateHero([FromBody] CreateHeroRequestDto dto)
     {
         if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+            return BadRequest("Invalid input");
 
         var created = await _heroService.CreateHeroAsync(dto);
         if (created == null)
-            return BadRequest(new { message = "Failed to create hero" });
+            return BadRequest("Failed to create hero");
 
-        return CreatedAtAction(nameof(GetMyHeroes), new { id = created.Id }, created);
+        return Ok(created);
     }
 
     [HttpPost("train/{id}")]
@@ -45,7 +45,7 @@ public class HeroesController : ControllerBase
     {
         var result = await _heroService.TrainHeroAsync(id);
         if (!result.Success)
-            return BadRequest(new { message = result.Message });
+            return BadRequest(result.Message);
 
         return Ok(result);
     }
