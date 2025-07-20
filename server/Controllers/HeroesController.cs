@@ -32,9 +32,6 @@ public class HeroesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateHero([FromBody] CreateHeroRequestDto dto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest("Invalid input");
-
         var created = await _heroService.CreateHeroAsync(dto);
         if (created == null)
             return BadRequest("Failed to create hero");
@@ -43,7 +40,7 @@ public class HeroesController : ControllerBase
     }
 
     [HttpPost("train/{id}")]
-    public async Task<IActionResult> TrainHero(Guid id)
+    public async Task<IActionResult> TrainHero([FromRoute] Guid id)
     {
         var result = await _heroService.TrainHeroAsync(id);
         if (!result.Success)

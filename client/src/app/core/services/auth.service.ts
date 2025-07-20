@@ -35,10 +35,6 @@ export class AuthService {
       .pipe(catchError((err) => throwError(() => this.getErrorMessage(err))));
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-  }
-
   private storeToken(token: string): void {
     localStorage.setItem('token', token);
   }

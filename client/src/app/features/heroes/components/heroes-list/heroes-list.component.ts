@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeroCardComponent } from '../hero-card/hero-card.component';
 import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { HeroService } from '../../../../core/services/hero.service';
 import { Hero, HeroCreateRequest } from '../../../../core/models/hero.model';
-import { PrivateHeroCardComponent } from '../private-hero-card/private-hero-card-component';
+import { PrivateHeroCardComponent } from '../private-hero-card/private-hero-card.component';
 import { getCurrentUserIdFromToken } from '../../../../core/utils/token-utils';
 import { HeroHubService } from '../../../../core/services/hero-hub.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hero-list',
@@ -26,6 +28,7 @@ export class HeroListComponent implements OnInit {
   loaded = false;
   showForm = false;
   currentUserId: string = '';
+  router = inject(Router);
 
   constructor(
     private heroService: HeroService,
@@ -55,7 +58,7 @@ export class HeroListComponent implements OnInit {
     });
   }
 
-  createHero(hero: HeroCreateRequest): void {
+  onCreateHero(hero: HeroCreateRequest): void {
     this.heroService.createHero(hero).subscribe({
       next: (newHero: Hero) => {
         this.showForm = false;
@@ -68,7 +71,7 @@ export class HeroListComponent implements OnInit {
     });
   }
 
-  trainHero(hero: Hero): void {
+  onTrainHero(hero: Hero): void {
     this.heroService.trainHero(hero.id).subscribe({
       next: (res: any) => {
         const message = res?.message ?? `${hero.name} trained successfully!`;
@@ -78,7 +81,7 @@ export class HeroListComponent implements OnInit {
           this.updateHeroList(res.updatedHero);
         }
 
-        this.heroes.sort((a, b) => b.currentPower - a.currentPower);
+        this.sortHeroes();
       },
       error: (err) => {
         const message = err ?? 'Training failed.';
@@ -100,6 +103,10 @@ export class HeroListComponent implements OnInit {
     }
 
     this.sortHeroes();
+  }
+  onLogout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
   private sortHeroes(): void {

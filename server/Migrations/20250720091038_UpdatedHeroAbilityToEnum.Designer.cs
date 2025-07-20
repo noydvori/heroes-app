@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeroesApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250720084641_UpdatedHeroAbilityToEnum")]
+    [Migration("20250720091038_UpdatedHeroAbilityToEnum")]
     partial class UpdatedHeroAbilityToEnum
     {
         /// <inheritdoc />

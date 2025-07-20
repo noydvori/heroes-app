@@ -135,11 +135,11 @@ public class HeroService : IHeroService
 
 
         return new HeroTrainingResultDto
-{
-    Success = true,
-    Message = $"Hero trained and gained {increase:F2} power",
-    UpdatedHero = MapToDto(hero)
-};
+        {
+            Success = true,
+            Message = $"Hero trained and gained {increase:F2} power",
+            UpdatedHero = MapToDto(hero)
+        };
     }
 
     private static HeroResponseDto MapToDto(Hero h) => new()

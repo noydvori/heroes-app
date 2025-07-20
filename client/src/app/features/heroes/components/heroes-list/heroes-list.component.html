@@ -1,3 +1,5 @@
+<button class="logout-btn" (click)="onLogout()">⏻</button>
+
 <h1 class="page-title">Welcome to Hero Training Center!</h1>
 <p class="subtitle">Add and train your heroes – up to 5 trainings per day</p>
 
@@ -10,7 +12,7 @@
 <app-hero-form
   *ngIf="showForm"
   (onCancel)="showForm = false"
-  (onCreate)="createHero($event)"
+  (onCreate)="onCreateHero($event)"
 >
 </app-hero-form>
 
@@ -23,7 +25,7 @@
       <app-hero-card
         *ngIf="hero.trainerId === currentUserId"
         [hero]="hero"
-        (onTrain)="trainHero($event)"
+        (onTrain)="onTrainHero($event)"
       ></app-hero-card>
 
       <app-private-hero-card

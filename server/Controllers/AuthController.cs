@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             _logger.LogWarning("CONTROLLER_LOGIN_FAILED: {Email} - {Message}", dto.Email, result.Message);
-            return Unauthorized(result); // תיקון: היה Ok() לפני
+            return Unauthorized(result); 
         }
 
         _logger.LogInformation("CONTROLLER_LOGIN_SUCCESS: {Email} - Token created", dto.Email);
