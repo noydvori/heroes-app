@@ -38,8 +38,8 @@ export class HeroListComponent implements OnInit {
 
     this.heroHubService.startConnection();
 
-    this.heroHubService.heroChanged$.subscribe(() => {
-      this.loadHeroes();
+    this.heroHubService.heroChanged$.subscribe((updatedHero) => {
+      this.updateHeroList(updatedHero);
     });
   }
 
@@ -59,9 +59,8 @@ export class HeroListComponent implements OnInit {
     this.heroService.createHero(hero).subscribe({
       next: (newHero: Hero) => {
         this.showForm = false;
-        this.heroes.push(newHero);
-        this.heroes.sort((a, b) => b.currentPower - a.currentPower);
-        alert(`Hero ${newHero.name} created seccessfully`);
+        this.updateHeroList(newHero);
+        alert(`Hero ${newHero.name} created successfully`);
       },
       error: () => {
         alert('Failed to create hero.');
@@ -76,10 +75,7 @@ export class HeroListComponent implements OnInit {
         alert(message);
 
         if (res.updatedHero) {
-          const index = this.heroes.findIndex((h) => h.id === hero.id);
-          if (index > -1) {
-            this.heroes[index] = res.updatedHero;
-          }
+          this.updateHeroList(res.updatedHero);
         }
 
         this.heroes.sort((a, b) => b.currentPower - a.currentPower);
@@ -93,5 +89,20 @@ export class HeroListComponent implements OnInit {
 
   trackById(index: number, hero: Hero): string {
     return hero.id;
+  }
+  private updateHeroList(updatedHero: Hero): void {
+    const index = this.heroes.findIndex((h) => h.id === updatedHero.id);
+
+    if (index > -1) {
+      this.heroes[index] = updatedHero;
+    } else {
+      this.heroes.push(updatedHero);
+    }
+
+    this.sortHeroes();
+  }
+
+  private sortHeroes(): void {
+    this.heroes.sort((a, b) => b.currentPower - a.currentPower);
   }
 }

@@ -66,28 +66,35 @@ public class HeroService : IHeroService
     }
 
     public async Task<HeroResponseDto?> CreateHeroAsync(CreateHeroRequestDto dto)
+{
+    var trainerId = GetTrainerId();
+
+    // Try to parse string to enum
+    if (!Enum.TryParse<HeroAbility>(dto.Ability.Trim(), ignoreCase: true, out var parsedAbility))
     {
-        var trainerId = GetTrainerId();
-
-        var hero = new Hero
-        {
-            Name = dto.Name.Trim(),
-            Ability = dto.Ability.Trim().ToLower(),
-            SuitColors = dto.SuitColors.Trim(),
-            StartingPower = dto.StartingPower,
-            CurrentPower = dto.StartingPower,
-            StartTrainingDate = DateTime.UtcNow,
-            TrainerId = trainerId
-        };
-
-        _context.Heroes.Add(hero);
-        
-        await _context.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("HeroListUpdated");
-        _logger.LogInformation("HERO_CREATE_SUCCESS: Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
-
-        return MapToDto(hero);
+        _logger.LogWarning("Invalid ability value received: {Ability}", dto.Ability);
+        return null; 
     }
+
+    var hero = new Hero
+    {
+        Name = dto.Name.Trim(),
+        Ability = parsedAbility,
+        SuitColors = dto.SuitColors.Trim(),
+        StartingPower = dto.StartingPower,
+        CurrentPower = dto.StartingPower,
+        StartTrainingDate = DateTime.UtcNow,
+        TrainerId = trainerId
+    };
+
+    _context.Heroes.Add(hero);
+
+    await _context.SaveChangesAsync();
+    await _hubContext.Clients.All.SendAsync("HeroChanged", MapToDto(hero));
+    _logger.LogInformation("HERO_CREATE_SUCCESS: Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
+
+    return MapToDto(hero);
+}
 
     public async Task<HeroTrainingResultDto> TrainHeroAsync(Guid heroId)
     {
@@ -139,7 +146,7 @@ public class HeroService : IHeroService
     {
         Id = h.Id,
         Name = h.Name,
-        Ability = h.Ability,
+        Ability = h.Ability.ToString(),
         SuitColors = h.SuitColors,
         StartTrainingDate = h.StartTrainingDate,
         StartingPower = h.StartingPower,

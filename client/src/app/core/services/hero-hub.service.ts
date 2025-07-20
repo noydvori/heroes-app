@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Subject } from 'rxjs';
-import { API_BASE_URL } from '../../app.config';
+import { API_BASE_URL, BASE_URL } from '../../app.config';
+import { Hero } from '../models/hero.model';
 
 @Injectable({ providedIn: 'root' })
 export class HeroHubService {
   private hubConnection!: signalR.HubConnection;
-  private heroChangedSource = new Subject<void>();
-
-  heroChanged$ = this.heroChangedSource.asObservable();
+  public heroChanged$ = new Subject<Hero>();
 
   startConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5026/heroHub')
-
-      .withAutomaticReconnect()
+      .withUrl(`${BASE_URL}/heroHub`)
       .build();
 
     this.hubConnection
       .start()
-      .then(() => console.log('✅ SignalR connected'))
-      .catch((err) => console.error('❌ SignalR error:', err));
+      .catch((err) => console.error('SignalR Connection Error:', err));
 
-    this.hubConnection.on('HeroListUpdated', () => {
-      console.log('📡 Hero list update received!');
-      this.heroChangedSource.next();
+    this.hubConnection.on('HeroChanged', (hero: Hero) => {
+      this.heroChanged$.next(hero);
     });
   }
 }
