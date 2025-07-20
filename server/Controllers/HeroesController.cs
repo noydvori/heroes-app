@@ -17,18 +17,21 @@ public class HeroesController : ControllerBase
         _heroService = heroService;
     }
 
+    // GET /api/heroes	
     [HttpGet]
     public async Task<ActionResult<List<HeroResponseDto>>> GetMyHeroes()
     {
         return await _heroService.GetMyHeroesAsync();
     }
 
+    // GET /api/heroes/all
     [HttpGet("all")]
     public async Task<ActionResult<List<HeroResponseDto>>> GetAll()
     {
         return await _heroService.GetAllHeroesAsync();
     }
 
+    // POST /api/heroes	
     [HttpPost]
     public async Task<IActionResult> CreateHero([FromBody] CreateHeroRequestDto dto)
     {
@@ -39,6 +42,7 @@ public class HeroesController : ControllerBase
         return Ok(created);
     }
 
+    // POST /api/heroes/train/{id}
     [HttpPost("train/{id}")]
     public async Task<IActionResult> TrainHero([FromRoute] Guid id)
     {

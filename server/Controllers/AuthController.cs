@@ -18,6 +18,7 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
+    // POST /api/auth/register	
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
@@ -36,6 +37,7 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
+    // POST /api/auth/login	
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
