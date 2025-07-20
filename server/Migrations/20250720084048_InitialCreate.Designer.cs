@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeroesApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250714111914_InitialCreate")]
+    [Migration("20250720084048_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,17 +25,17 @@ namespace HeroesApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Hero", b =>
+            modelBuilder.Entity("HeroesApi.Models.Hero", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Ability")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Ability")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("CurrentPower")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("LastTrainingDate")
@@ -43,17 +43,20 @@ namespace HeroesApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("StartTrainingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("StartingPower")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SuitColors")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<Guid>("TrainerId")
                         .HasColumnType("uniqueidentifier");
@@ -68,7 +71,7 @@ namespace HeroesApi.Migrations
                     b.ToTable("Heroes");
                 });
 
-            modelBuilder.Entity("Trainer", b =>
+            modelBuilder.Entity("HeroesApi.Models.Trainer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +79,8 @@ namespace HeroesApi.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
@@ -91,9 +95,9 @@ namespace HeroesApi.Migrations
                     b.ToTable("Trainers");
                 });
 
-            modelBuilder.Entity("Hero", b =>
+            modelBuilder.Entity("HeroesApi.Models.Hero", b =>
                 {
-                    b.HasOne("Trainer", "Trainer")
+                    b.HasOne("HeroesApi.Models.Trainer", "Trainer")
                         .WithMany("Heroes")
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -102,7 +106,7 @@ namespace HeroesApi.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("Trainer", b =>
+            modelBuilder.Entity("HeroesApi.Models.Trainer", b =>
                 {
                     b.Navigation("Heroes");
                 });

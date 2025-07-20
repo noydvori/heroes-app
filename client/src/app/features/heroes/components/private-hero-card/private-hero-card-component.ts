@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 import { Hero } from '../../../../core/models/hero.model';
 
 @Component({
-  selector: 'app-other-hero-card',
+  selector: 'app-private-hero-card',
   standalone: true,
   imports: [],
-  templateUrl: './other-hero-card.component.html',
-  styleUrls: ['./other-hero-card.component.css'],
+  templateUrl: './private-hero-card.component.html',
+  styleUrls: ['./private-hero-card.component.css'],
 })
-export class OtherHeroCardComponent {
+export class PrivateHeroCardComponent {
   @Input() hero!: Hero;
 }

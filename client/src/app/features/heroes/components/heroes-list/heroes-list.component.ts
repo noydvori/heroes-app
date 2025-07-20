@@ -4,7 +4,7 @@ import { HeroCardComponent } from '../hero-card/hero-card.component';
 import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { HeroService } from '../../../../core/services/hero.service';
 import { Hero, HeroCreateRequest } from '../../../../core/models/hero.model';
-import { OtherHeroCardComponent } from '../other-hero-card/other-hero-card-component';
+import { PrivateHeroCardComponent } from '../private-hero-card/private-hero-card-component';
 import { getCurrentUserIdFromToken } from '../../../../core/utils/token-utils';
 import { HeroHubService } from '../../../../core/services/hero-hub.service';
 
@@ -15,7 +15,7 @@ import { HeroHubService } from '../../../../core/services/hero-hub.service';
     CommonModule,
     HeroCardComponent,
     HeroFormComponent,
-    OtherHeroCardComponent,
+    PrivateHeroCardComponent,
   ],
   templateUrl: './heroes-list.component.html',
   styleUrls: ['./heroes-list.component.css'],

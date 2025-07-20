@@ -16,7 +16,7 @@ namespace HeroesApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
@@ -30,15 +30,15 @@ namespace HeroesApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ability = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Ability = table.Column<int>(type: "int", nullable: false),
+                    SuitColors = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    StartingPower = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    CurrentPower = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     StartTrainingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SuitColors = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartingPower = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CurrentPower = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TrainingsToday = table.Column<int>(type: "int", nullable: false),
-                    LastTrainingDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    LastTrainingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

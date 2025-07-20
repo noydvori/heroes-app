@@ -26,10 +26,10 @@
         (onTrain)="trainHero($event)"
       ></app-hero-card>
 
-      <app-other-hero-card
+      <app-private-hero-card
         *ngIf="hero.trainerId !== currentUserId"
         [hero]="hero"
-      ></app-other-hero-card>
+      ></app-private-hero-card>
     </div>
   </div>
 </ng-container>

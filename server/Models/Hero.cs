@@ -21,11 +21,9 @@ public class Hero
     public string SuitColors { get; set; } = null!;
 
     [Required]
-    [Range(0, 1000)]
     public decimal StartingPower { get; set; }
 
     [Required]
-    [Range(0, 1000)]
     public decimal CurrentPower { get; set; }
 
     public DateTime StartTrainingDate { get; set; } = DateTime.UtcNow;

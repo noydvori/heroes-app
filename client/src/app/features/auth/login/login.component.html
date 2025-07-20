@@ -5,7 +5,11 @@
     <hr />
 
     <label><b>Email</b></label>
-    <input placeholder="Enter Email" formControlName="email" />
+    <input
+      placeholder="Enter Email"
+      formControlName="email"
+      autocomplete="email"
+    />
     <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
       <div *ngIf="email.errors?.['required']">Email is required.</div>
       <div *ngIf="email.errors?.['email']">Invalid email format.</div>
@@ -16,6 +20,7 @@
       type="password"
       placeholder="Enter Password"
       formControlName="password"
+      autocomplete="current-password"
     />
     <div
       *ngIf="password.invalid && (password.dirty || password.touched)"
