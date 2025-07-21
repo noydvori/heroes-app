@@ -23,19 +23,28 @@
         Ability is required.
       </div>
 
-      <input
-        type="text"
-        placeholder="Suit Colors"
-        formControlName="suitColors"
-        required
-      />
+      <div class="checkbox-group">
+        <label
+          *ngFor="let color of availableColors"
+          [ngStyle]="{ 'background-color': color }"
+          class="checkbox-label"
+        >
+          <input
+            type="checkbox"
+            [value]="color"
+            (change)="onColorChange($event)"
+            [checked]="suitColors.value.includes(color)"
+          />
+          {{ color | titlecase }}
+        </label>
+      </div>
+
       <div
         *ngIf="suitColors.invalid && (suitColors.dirty || suitColors.touched)"
         class="error"
       >
-        Suit colors are required.
+        At least one suit color is required.
       </div>
-
       <input
         type="number"
         placeholder="Starting Power"

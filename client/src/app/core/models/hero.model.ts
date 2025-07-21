@@ -15,3 +15,11 @@ export interface HeroCreateRequest {
   suitColors: string;
   startingPower: number;
 }
+
+export interface HeroUpdateRequest {
+  id: string;
+  name: string;
+  ability: string;
+  suitColors: string;
+  startingPower: number;
+}

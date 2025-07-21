@@ -48,8 +48,31 @@ public class HeroesController : ControllerBase
     {
         var result = await _heroService.TrainHeroAsync(id);
         if (!result.Success)
-            return BadRequest(result.Message);
+            return Ok(result);
 
         return Ok(result);
     }
+
+    // PUT /api/heroes/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateHero(Guid id, [FromBody] HeroUpdateRequest request)
+    {
+        var hero = await _heroService.UpdateHeroAsync(id, request);
+        if (hero == null)
+            return NotFound(new { message = "Hero not found." });
+
+        return Ok(hero);
+    }
+
+    // DELETE /api/heroes/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteHero(Guid id)
+    {
+        var success = await _heroService.DeleteHeroAsync(id);
+        if (!success)
+            return NotFound(new { message = "Hero not found or unauthorized." });
+
+        return Ok(new { message = "Hero deleted successfully." });
+    }
+
 }

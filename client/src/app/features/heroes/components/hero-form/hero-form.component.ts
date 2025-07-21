@@ -20,25 +20,55 @@ export class HeroFormComponent {
   @Output() onCancel = new EventEmitter<void>();
 
   addHeroForm: FormGroup;
+  availableColors = [
+    'Red',
+    'Blue',
+    'Green',
+    'Yellow',
+    'Black',
+    'Pink',
+    'Orange',
+    'Teal',
+  ];
 
   constructor(private fb: FormBuilder) {
     this.addHeroForm = this.fb.group({
       name: ['', Validators.required],
       ability: ['', Validators.required],
-      suitColors: ['', Validators.required],
+      suitColors: [[], Validators.required],
       startingPower: [0, [Validators.required, Validators.min(0)]],
     });
   }
 
   onSubmit(): void {
     if (this.addHeroForm.valid) {
-      this.onCreate.emit(this.addHeroForm.value);
+      const rawValue = this.addHeroForm.value;
+
+      const heroRequest: HeroCreateRequest = {
+        ...rawValue,
+        suitColors: (rawValue.suitColors as string[]).join(','),
+      };
+
+      this.onCreate.emit(heroRequest);
     }
   }
 
   resetForm(): void {
     this.addHeroForm.reset();
     this.onCancel.emit();
+  }
+  onColorChange(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const value = checkbox.value;
+    const current = this.suitColors.value as string[];
+
+    if (checkbox.checked) {
+      this.suitColors.setValue([...current, value]);
+    } else {
+      this.suitColors.setValue(current.filter((c) => c !== value));
+    }
+
+    this.suitColors.markAsTouched();
   }
   get name() {
     return this.addHeroForm.controls['name'];

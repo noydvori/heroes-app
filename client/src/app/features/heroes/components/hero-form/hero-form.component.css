@@ -87,3 +87,26 @@
 .close-button:hover {
   color: #dc3545;
 }
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: #eee;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  user-select: none;
+}
+
+.checkbox-label input {
+  margin-right: 6px;
+  transform: scale(1.2);
+}

@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             _logger.LogWarning("CONTROLLER_REGISTER_FAILED: {Email} - {Message}", dto.Email, result.Message);
-            return BadRequest(result);
+            return Ok(result);
         }
 
         _logger.LogInformation("CONTROLLER_REGISTER_SUCCESS: {Email}", dto.Email);
@@ -49,7 +49,7 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             _logger.LogWarning("CONTROLLER_LOGIN_FAILED: {Email} - {Message}", dto.Email, result.Message);
-            return Unauthorized(result); 
+            return Ok(result); 
         }
 
         _logger.LogInformation("CONTROLLER_LOGIN_SUCCESS: {Email} - Token created", dto.Email);

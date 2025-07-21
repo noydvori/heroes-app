@@ -91,13 +91,19 @@ export class RegistrationComponent {
 
     this.authService.register(formValue).subscribe({
       next: (res) => {
+        if (!res.success) {
+          this.serverError = res.message || 'Register failed.';
+          return;
+        }
+
         this.successMessage = res.message ?? 'Registration successful!';
+        this.serverError = '';
         this.registerForm.reset();
         this.isSubmitted = false;
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (err) => {
-        this.serverError = err ?? 'Something went wrong. Please try again.';
+        this.serverError = 'Server error. Please try again.';
       },
     });
   }

@@ -3,7 +3,11 @@ import { CommonModule } from '@angular/common';
 import { HeroCardComponent } from '../hero-card/hero-card.component';
 import { HeroFormComponent } from '../hero-form/hero-form.component';
 import { HeroService } from '../../../../core/services/hero.service';
-import { Hero, HeroCreateRequest } from '../../../../core/models/hero.model';
+import {
+  Hero,
+  HeroCreateRequest,
+  HeroUpdateRequest,
+} from '../../../../core/models/hero.model';
 import { PrivateHeroCardComponent } from '../private-hero-card/private-hero-card.component';
 import { getCurrentUserIdFromToken } from '../../../../core/utils/token-utils';
 import { HeroHubService } from '../../../../core/services/hero-hub.service';
@@ -93,6 +97,7 @@ export class HeroListComponent implements OnInit {
   trackById(index: number, hero: Hero): string {
     return hero.id;
   }
+
   private updateHeroList(updatedHero: Hero): void {
     const index = this.heroes.findIndex((h) => h.id === updatedHero.id);
 
@@ -104,6 +109,21 @@ export class HeroListComponent implements OnInit {
 
     this.sortHeroes();
   }
+
+  onUpdateHero(request: HeroUpdateRequest): void {
+    this.heroService.updateHero(request.id, request).subscribe({
+      next: (updatedHero) => {
+        this.updateHeroList(updatedHero);
+        //this.heroToEdit = null;
+        this.showForm = false;
+        alert(`${updatedHero.name} updated successfully!`);
+      },
+      error: () => {
+        alert('Failed to update hero.');
+      },
+    });
+  }
+
   onLogout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);

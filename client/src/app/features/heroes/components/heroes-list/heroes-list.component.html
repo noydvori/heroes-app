@@ -13,8 +13,7 @@
   *ngIf="showForm"
   (onCancel)="showForm = false"
   (onCreate)="onCreateHero($event)"
->
-</app-hero-form>
+/>
 
 <ng-container *ngIf="loaded">
   <div *ngIf="heroes.length > 0; else noHeroes">
@@ -26,12 +25,12 @@
         *ngIf="hero.trainerId === currentUserId"
         [hero]="hero"
         (onTrain)="onTrainHero($event)"
-      ></app-hero-card>
+      />
 
       <app-private-hero-card
         *ngIf="hero.trainerId !== currentUserId"
         [hero]="hero"
-      ></app-private-hero-card>
+      />
     </div>
   </div>
 </ng-container>

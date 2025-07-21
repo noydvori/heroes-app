@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Hero, HeroCreateRequest } from '../models/hero.model';
+import {
+  Hero,
+  HeroCreateRequest,
+  HeroUpdateRequest,
+} from '../models/hero.model';
 import { API_BASE_URL } from '../../app.config';
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +37,17 @@ export class HeroService {
       .pipe(catchError((err) => throwError(() => this.getErrorMessage(err))));
   }
 
+  updateHero(id: string, data: HeroUpdateRequest): Observable<Hero> {
+    return this.http
+      .put<Hero>(`${this.apiUrl}/${id}`, data)
+      .pipe(catchError((err) => throwError(() => this.getErrorMessage(err))));
+  }
+
+  deleteHero(id: string): Observable<{ message: string }> {
+    return this.http
+      .delete<{ message: string }>(`${this.apiUrl}/${id}`)
+      .pipe(catchError((err) => throwError(() => this.getErrorMessage(err))));
+  }
   private getErrorMessage(error: unknown): string {
     if (error && typeof error === 'object' && 'error' in error) {
       const err = error as { error?: { message?: string } };

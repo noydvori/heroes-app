@@ -8,4 +8,6 @@ public interface IHeroService
     Task<List<HeroResponseDto>> GetAllHeroesAsync();
     Task<HeroResponseDto?> CreateHeroAsync(CreateHeroRequestDto dto);
     Task<HeroTrainingResultDto> TrainHeroAsync(Guid heroId);
+    Task<HeroResponseDto?> UpdateHeroAsync(Guid id, HeroUpdateRequest dto);
+    Task<bool> DeleteHeroAsync(Guid id);
 }

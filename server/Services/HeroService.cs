@@ -22,12 +22,12 @@ public class HeroService : IHeroService
     IHttpContextAccessor httpContextAccessor,
     ILogger<HeroService> logger,
     IHubContext<HeroHub> hubContext)
-{
-    _context = context;
-    _httpContextAccessor = httpContextAccessor;
-    _logger = logger;
-    _hubContext = hubContext;
-}
+    {
+        _context = context;
+        _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
+        _hubContext = hubContext;
+    }
 
     private Guid GetTrainerId()
     {
@@ -66,35 +66,34 @@ public class HeroService : IHeroService
     }
 
     public async Task<HeroResponseDto?> CreateHeroAsync(CreateHeroRequestDto dto)
-{
-    var trainerId = GetTrainerId();
-
-    // Try to parse string to enum
-    if (!Enum.TryParse<HeroAbility>(dto.Ability.Trim(), ignoreCase: true, out var parsedAbility))
     {
-        _logger.LogWarning("Invalid ability value received: {Ability}", dto.Ability);
-        return null; 
+        var trainerId = GetTrainerId();
+
+        if (!Enum.TryParse<HeroAbility>(dto.Ability.Trim(), ignoreCase: true, out var parsedAbility))
+        {
+            _logger.LogWarning("Invalid ability value received: {Ability}", dto.Ability);
+            return null;
+        }
+
+        var hero = new Hero
+        {
+            Name = dto.Name.Trim(),
+            Ability = parsedAbility,
+            SuitColors = dto.SuitColors.Trim(),
+            StartingPower = dto.StartingPower,
+            CurrentPower = dto.StartingPower,
+            StartTrainingDate = DateTime.UtcNow,
+            TrainerId = trainerId
+        };
+
+        _context.Heroes.Add(hero);
+
+        await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("HeroChanged", MapToDto(hero));
+        _logger.LogInformation("HERO_CREATE_SUCCESS: Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
+
+        return MapToDto(hero);
     }
-
-    var hero = new Hero
-    {
-        Name = dto.Name.Trim(),
-        Ability = parsedAbility,
-        SuitColors = dto.SuitColors.Trim(),
-        StartingPower = dto.StartingPower,
-        CurrentPower = dto.StartingPower,
-        StartTrainingDate = DateTime.UtcNow,
-        TrainerId = trainerId
-    };
-
-    _context.Heroes.Add(hero);
-
-    await _context.SaveChangesAsync();
-    await _hubContext.Clients.All.SendAsync("HeroChanged", MapToDto(hero));
-    _logger.LogInformation("HERO_CREATE_SUCCESS: Hero {HeroId} created by trainer {TrainerId}", hero.Id, trainerId);
-
-    return MapToDto(hero);
-}
 
     public async Task<HeroTrainingResultDto> TrainHeroAsync(Guid heroId)
     {
@@ -130,7 +129,7 @@ public class HeroService : IHeroService
         await _context.SaveChangesAsync();
         await _hubContext.Clients.All.SendAsync("HeroListUpdated");
 
-        _logger.LogInformation("HERO_TRAIN_SUCCESS: Training completed - HeroId: {HeroId}, TrainerId: {TrainerId}, PowerGain: {PowerGain:F2}", 
+        _logger.LogInformation("HERO_TRAIN_SUCCESS: Training completed - HeroId: {HeroId}, TrainerId: {TrainerId}, PowerGain: {PowerGain:F2}",
     hero.Id, trainerId, increase);
 
 
@@ -153,4 +152,42 @@ public class HeroService : IHeroService
         CurrentPower = h.CurrentPower,
         TrainerId = h.TrainerId
     };
+
+    public async Task<HeroResponseDto?> UpdateHeroAsync(Guid id, HeroUpdateRequest request)
+    {
+        var trainerId = GetTrainerId();
+
+        if (!Enum.TryParse<HeroAbility>(request.Ability.Trim(), ignoreCase: true, out var parsedAbility))
+        {
+            _logger.LogWarning("Invalid ability value received: {Ability}", request.Ability);
+            return null;
+        }
+
+
+        var hero = await _context.Heroes.FindAsync(id);
+        if (hero == null) return null;
+        if (hero.TrainerId != trainerId) return null;
+
+        hero.Name = request.Name;
+        hero.Ability = parsedAbility;
+        hero.SuitColors = request.SuitColors;
+        hero.CurrentPower = request.StartingPower;
+
+        await _context.SaveChangesAsync();
+        return MapToDto(hero);
+    }
+    
+    public async Task<bool> DeleteHeroAsync(Guid id)
+    {
+        var trainerId = GetTrainerId();
+
+        var hero = await _context.Heroes.FindAsync(id);
+        if (hero == null || hero.TrainerId != trainerId)
+            return false;
+
+        _context.Heroes.Remove(hero);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
 }
